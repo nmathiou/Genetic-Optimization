@@ -9,14 +9,12 @@ class Individual:
     
     def __init__(self, params):
         self.parameters = params
-        self.fitness = self.calculate_fitness()
+        self.fitness = 0
     
     def mutate(self):
         pass
 
     
-    def calculate_fitness(self):
-        return 0
     
     
     
