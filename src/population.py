@@ -7,8 +7,9 @@ import numpy as np
 
 class Population:
     
-    def __init__(self, pop_size = 100, parameters_bounds=[[-1, 1], [1, 2], [3, 12], [-3, -1]], fitness_function = None):
+    def __init__(self, pop_size = 100, mutation_rate=0.01, parameters_bounds=[[-1, 1], [1, 2], [3, 12], [-3, -1]], fitness_function = None):
         self.pop_size = pop_size
+        self.mutation_rate = mutation_rate
         self.parameters_size = len(parameters_bounds)
         self.upper_bounds = np.array([x[1] for x in parameters_bounds])
         self.lower_bounds = np.array([x[0] for x in parameters_bounds])
@@ -26,8 +27,7 @@ class Population:
 
     def avg_fitness(self):
         avg_fit = 0
-        best_fit = 0
-        best_individual = self.population[0]
+
 
         for i in self.population:
             avg_fit += i.fitness
@@ -61,7 +61,35 @@ class Population:
         genes_parent_2_2 = parent_1.parameters[arr[num:]]
         child_1 = Individual(np.append(genes_parent_1_1, genes_parent_2_1))
         child_2 = Individual(np.append(genes_parent_1_2,genes_parent_2_2))
+        return child_1, child_2
 
+    def mutate(self):
+        for ind in self.population:
+            ind.mutate(self.mutation_rate, self.upper_bounds, self.lower_bounds)
+
+
+    def sellection(self):
+
+        self.__sort()
+        self.parents = self.population[0:int(len(self.population)/2)+1]
+        return self.parents
+
+    def advance_generation(self):
+        next_gen = []
+        self.calculate_fitness()
+        parents = self.sellection()
+        # np.random.shuffle(np.array(parents))
+        for p in range(0, len(parents)-1):
+            child_1, child_2 = self.crossover(parents[p], parents[p+1])
+            child_1.mutate(self.mutation_rate, self.upper_bounds, self.lower_bounds)
+            child_2.mutate(self.mutation_rate, self.upper_bounds, self.lower_bounds)
+
+            next_gen.append(child_1)
+            next_gen.append(child_2)
+
+        self.population = next_gen
+        print(len(self.population))
+        self.calculate_fitness()
 
 
     def __sort(self):

@@ -1,4 +1,5 @@
 
+import numpy as np
 
 
 
@@ -11,8 +12,13 @@ class Individual:
         self.parameters = params
         self.fitness = 0
     
-    def mutate(self):
-        pass
+    def mutate(self, mutation_rate, upper_bounds, lower_bounds):
+        
+        for i in range(len(self.parameters)):
+            propability = np.random.rand()
+            if propability < mutation_rate:
+                self.parameters[i] = np.random.rand()*(upper_bounds[i]-lower_bounds[i])+lower_bounds[i]
+
 
     
     
