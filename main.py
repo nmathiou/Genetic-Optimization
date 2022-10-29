@@ -17,7 +17,4 @@ if __name__ == "__main__":
 
     pop.calculate_fitness()
 
-    print(pop.avg_fitness())
-    print(pop.get_best_individuals()[0].fitness)
-
-    print(1 - 1 + 12**2 + -1**3)
+    pop.crossover(pop.population[0], pop.population[1])

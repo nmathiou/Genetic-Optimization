@@ -52,7 +52,17 @@ class Population:
 
 
     def crossover(self, parent_1: Individual, parent_2: Individual):
-        
+        arr = np.arange(self.parameters_size)
+        # np.random.shuffle(arr)
+        num = np.random.randint(int(0.2*self.parameters_size), int(0.8*self.parameters_size))
+        genes_parent_1_1 = parent_1.parameters[arr[0:num]]
+        genes_parent_1_2 = parent_2.parameters[arr[0:num]]
+        genes_parent_2_1 = parent_2.parameters[arr[num:]]
+        genes_parent_2_2 = parent_1.parameters[arr[num:]]
+        child_1 = Individual(np.append(genes_parent_1_1, genes_parent_2_1))
+        child_2 = Individual(np.append(genes_parent_1_2,genes_parent_2_2))
+
+
 
     def __sort(self):
 
